@@ -1,0 +1,32 @@
+<html>
+<head>
+  <title>Week2Submission_NG</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+  <style>
+    #map{ width: 900px; height: 500px; }
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+  
+  <script>
+      var map = L.map('map').setView([28.469618227512782, 77.05769970538597], 15);
+      
+      // load a tile layer
+      
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>', }).addTo(map);
+      
+      var PointsLayer = {"type":"FeatureCollection","features":[{"type":"Feature","properties":{"Name":"One"},"geometry":{"coordinates":[77.056042029928,28.473418570088157],"type":"Point"}},{"type":"Feature","properties":{"Name":"Two"},"geometry":{"coordinates":[77.05769970538597,28.469618227512782],"type":"Point"}},{"type":"Feature","properties":{"Name":"Three"},"geometry":{"coordinates":[77.0607233054198,28.47212460376221],"type":"Point"}},{"type":"Feature","properties":{"Name":"Four"},"geometry":{"coordinates":[77.05955630189754,28.475073891290094],"type":"Point"}}]};
+      
+      L.geoJSON(PointsLayer).addTo(map);
+
+  </script>
+</body>
+</html>
