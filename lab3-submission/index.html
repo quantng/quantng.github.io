@@ -70,6 +70,45 @@ width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;
 
     const IllinoisGeoJSON = L.geoJson(IllinoisGJSON, {style: style}).addTo(map);
 
+    function highlightFeature(e) {
+		const layer = e.target;
+
+		layer.setStyle({
+			weight: 5,
+			color: 'white',
+			fillOpacity: 0.9
+		});
+
+		layer.bringToFront();
+
+		//info.update(layer.feature.properties); //we will use this in a bit.
+	}
+
+  function resetHighlight(e) {
+		geojson.resetStyle(e.target);
+		//info.update();
+	}
+
+  function zoomToFeature(e) {
+
+    map.fitBounds(e.target.getBounds());
+  }
+
+  function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			//click: zoomToFeature
+		});
+
+
+    const geojson = L.geoJson(IllinoisGJSON, {
+		style,
+		onEachFeature //This is the important new function connection 
+	}).addTo(map);
+    
+    
+    
     //locates the legend in the bottom right of the map
 var legend = L.control({position: 'bottomright'});
 
