@@ -28,7 +28,7 @@
 
   //function formats the shape color based on the attribute d's value
 
-    function getColor(EdNorm) {
+  function getColor(EdNorm) {
         return EdNorm > 35.19  ? '#BD0026' :
               EdNorm > 22.91  ? '#E31A1C' :
               EdNorm > 12.87  ? '#FC4E2A' :
@@ -36,9 +36,9 @@
                           '#FFEDA0';
     }
 
-    function stylefn(feature) {
+  function style(feature) {
         return {
-            fillColor: getColor(feature.properties.EdNorm), //color by density attribute
+            fillColor: getColor(feature.properties.EdNorm), 
             weight: 0.5, //line weight
             opacity: 1, //line opacity
             color: 'black', //line color
@@ -46,9 +46,7 @@
         };
     }
 
-    const IllinoisGeoJSON = L.geoJson(IllinoisGJSON, {
-          stylefn, //refers to the style function above
-        }).addTo(map);
+   L.geoJson(IllinoisGJSON, {style: style}).addTo(map);
 
   </script>
 </body>
