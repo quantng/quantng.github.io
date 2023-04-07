@@ -7,9 +7,7 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
     crossorigin=""></script>
-  <style>
-    #map{ width: 800px; height: 600px; }
-  </style>
+
 </head>
 
 <body>
@@ -24,6 +22,7 @@
       const tiles = L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=oH37S3uI0QBpfZ7mdEAC', { attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>', }).addTo(map);
       
       const IllinoisGeoJSON = L.geoJson(IllioisGJSON).addTo(map);
+      //Remember - IllioisGJSON is the variable name inside our lab3.js file
 
   </script>
 </body>
