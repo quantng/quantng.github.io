@@ -46,7 +46,30 @@
         };
     }
 
-   L.geoJson(IllinoisGJSON, {style: style}).addTo(map);
+    const IllinoisGeoJSON = L.geoJson(IllinoisGJSON, {style: style}).addTo(map);
+
+    //locates the legend in the bottom right of the map
+var legend = L.control({position: 'bottomright'});
+
+//adds the legend to the map in a <div> 
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [10.5 , 17.5, 27.5],
+        labels = [];
+
+// loop through our EdNorm intervals and generate a label and colored square
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+//adds the legend to the map
+legend.addTo(map);
 
   </script>
 </body>
