@@ -36,7 +36,7 @@
                           '#FFEDA0';
     }
 
-    function style(feature) {
+    function stylefn(feature) {
         return {
             fillColor: getColor(feature.properties.EdNorm), //color by density attribute
             weight: 0.5, //line weight
@@ -46,9 +46,8 @@
         };
     }
 
-
     const IllinoisGeoJSON = L.geoJson(IllinoisGJSON, {
-          style, //refers to the style function above
+          stylefn, //refers to the style function above
         }).addTo(map);
 
   </script>
