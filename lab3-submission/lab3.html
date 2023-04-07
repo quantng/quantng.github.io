@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Week2Submission_NG</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>
+  <style>
+    #map{ width: 800px; height: 600px; }
+  </style>
+</head>
+
+<body>
+
+  <div id="map"><script src="PointsLayer-geojson.js" type="text/javascript"></script></div>
+  
+  <script>
+      var map = L.map('map').setView([40.1020, -88.2272], 15);
+      
+      // load a tile layer
+      
+      L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=oH37S3uI0QBpfZ7mdEAC', { attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>', }).addTo(map);
+      
+      L.geoJSON(PointsLayer).addTo(map);
+
+  </script>
+</body>
+</html>
