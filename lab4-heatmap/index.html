@@ -36,11 +36,8 @@ $.getJSON("https://gist.githubusercontent.com/raechelportelli/91c6caf9af3daf85a7
  
 geojsonLayer.addData(data);
 
-
-      L.geoJSON(PointsLayer).addTo(map);
-
 var heatData = [];
-	geojsonLayer.eachLayer(function(layer) {
+geojsonLayer.eachLayer(function(layer) {
 		var latlng = layer.getLatLng();
 		var value = layer.value;
 		heatData.push([latlng.lat, latlng.lng, value]);
@@ -60,7 +57,7 @@ var heatData = [];
         
 			}).addTo(map);
 		});
-        
+
   </script>
 </body>
 </html>
