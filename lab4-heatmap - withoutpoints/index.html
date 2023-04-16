@@ -42,12 +42,12 @@ var labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z
 			onEachFeature: function(feature, layer) {
 				// Optional: add popups or other interactions to each feature
 			}
-		}).addTo(map);
+		});
 
 $.getJSON("https://gist.githubusercontent.com/raechelportelli/91c6caf9af3daf85a7a2fe1eec079a10/raw/28c42649557d8e286c54bc9ef97af4c17bafdd96/secondEd.geojson",
  function(data) {
  
-// geojsonLayer.addData(data);
+geojsonLayer.addData(data);
 
 var heatData = [];
 geojsonLayer.eachLayer(function(layer) {
