@@ -39,6 +39,28 @@ geojsonLayer.addData(data);
 
       L.geoJSON(PointsLayer).addTo(map);
 
+var heatData = [];
+	geojsonLayer.eachLayer(function(layer) {
+		var latlng = layer.getLatLng();
+		var value = layer.value;
+		heatData.push([latlng.lat, latlng.lng, value]);
+	});
+
+    var heatLayer = L.heatLayer(heatData, {
+				radius: 100,
+				blur: 10,
+				opacity: 1,
+				maxZoom: 17,
+				max: 4.0,
+				
+				gradient: {
+					0.0: 'green',
+					0.5: 'yellow',
+					1.0: 'red'}
+        
+			}).addTo(map);
+		});
+        
   </script>
 </body>
 </html>
