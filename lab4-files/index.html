@@ -7,6 +7,18 @@
     <title>Document</title>
 </head>
 <body>
+  
+  <script>
+      const map = L.map('map').setView([40, -89], 6);
+      
+      // load a tile layer
+      
+      const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
     
+
 </body>
 </html>
