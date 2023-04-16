@@ -25,6 +25,18 @@
       
       L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=oH37S3uI0QBpfZ7mdEAC', { attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>', }).addTo(map);
       
+      var geojsonLayer = L.geoJSON(null, {
+			onEachFeature: function(feature, layer) {
+				// Optional: add popups or other interactions to each feature
+			}
+		}).addTo(map);
+
+$.getJSON("https://gist.githubusercontent.com/raechelportelli/91c6caf9af3daf85a7a2fe1eec079a10/raw/28c42649557d8e286c54bc9ef97af4c17bafdd96/secondEd.geojson",
+ function(data) {
+ 
+geojsonLayer.addData(data);
+
+
       L.geoJSON(PointsLayer).addTo(map);
 
   </script>
