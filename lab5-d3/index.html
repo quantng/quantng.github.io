@@ -67,7 +67,7 @@
             .data(data)
             .enter()
             .append("path")
-            .attr("d", d3.symbol().type(d3.symbolCircle))
+            .attr("d", d3.symbol().type(d3.symbolTriangle.size(200)))
             .attr("transform", function(d) {
                 return "translate(" + x(d.PerCapitaAcc) + "," + y(d.Severity) + ")";
             })
