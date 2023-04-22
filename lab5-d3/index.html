@@ -27,13 +27,13 @@
       d3.csv("https://raw.githubusercontent.com/raechelportelli/raechelportelli.github.io/master/GGIS517/Lab2/data2.csv").then(function(data) {
 
         // Step 4: Set the ranges
-        var y = d3.scaleLinear()
-                  .range([0, width])
-                  .domain(d3.extent(data, function(d) { return d.Severity; })).nice();
-
         var x = d3.scaleLinear()
-                  .range([height, 0])
+                  .range([0, width])
                   .domain(d3.extent(data, function(d) { return d.PerCapitaAcc; })).nice();
+
+        var y = d3.scaleLinear()
+                  .range([height, 0])
+                  .domain(d3.extent(data, function(d) { return d.Severity; })).nice();
 
         // Step 5: Add the x and y axes
         var xAxis = d3.axisBottom(x);
@@ -69,7 +69,7 @@
             .append("path")
             .attr("d", d3.symbol().type(d3.symbolTriangle))
             .attr("transform", function(d) {
-                return "translate(" + x(d.Severity) + "," + y(d.PerCapitaAcc) + ")";
+                return "translate(" + x(d.PerCapitaAcc) + "," + y(d.Severity) + ")";
             })
             //.attr("r", 2)
             .style("fill", "#CC0000");
