@@ -27,11 +27,11 @@
       d3.csv("https://raw.githubusercontent.com/raechelportelli/raechelportelli.github.io/master/GGIS517/Lab2/data2.csv").then(function(data) {
 
         // Step 4: Set the ranges
-        var x = d3.scaleLinear()
+        var y = d3.scaleLinear()
                   .range([0, width])
                   .domain(d3.extent(data, function(d) { return d.Severity; })).nice();
 
-        var y = d3.scaleLinear()
+        var x = d3.scaleLinear()
                   .range([height, 0])
                   .domain(d3.extent(data, function(d) { return d.PerCapitaAcc; })).nice();
 
