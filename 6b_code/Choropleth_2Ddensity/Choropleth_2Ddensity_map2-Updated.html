@@ -228,7 +228,7 @@ function draw_baseMap(mDIV, variables, trace) {
  * call the draw_choroplethMap function
  * call the draw_2dDensityPlots function
  */
-function trace_selected(mDIV) {
+ function trace_selected(mDIV) {
 	
 	var mapN = app[mDIV];
 	
@@ -237,8 +237,13 @@ function trace_selected(mDIV) {
 	mapN.intervals = classification(CLASSIFICATION_METHOD, NUMBER_OF_CLASS, trace)
 	draw_choroplethMap(mapN, trace);
 	
+	// Update the histogram and chart legend when the layer selection changes
 	draw_2dDensityPlots();
+
+	// Update the chart legend
+	updateChartLegend(trace);
 }
+
 
 
 /**
