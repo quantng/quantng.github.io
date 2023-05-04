@@ -12,15 +12,9 @@
   <div>
     <label for="filter1">Risk Weighted Avg:</label>
     <select id="filter1">
-      <option value="value1">Value 1</option>
-      <option value="value2">Value 2</option>
-      <option value="value3">Value 3</option>
     </select>
     <label for="filter2">Investor Profiles:</label>
     <select id="filter2">
-      <option value="valueA">Value A</option>
-      <option value="valueB">Value B</option>
-      <option value="valueC">Value C</option>
     </select>
   </div>
   <div id="map" style="width: 100%; height: 400px;"></div>
@@ -33,9 +27,37 @@
     }).addTo(map);
 
     // Load the GeoJSON data (replace this URL with your own dataset)
-    var geojson_url = 'https://github.com/quantng/quantng.github.io/blob/main/project/output.geojson';
+    var geojson_url = 'https://quantng.github.io/project/output.geojson';
 
     var geojsonLayer;
+
+    function populateFilters(data) {
+      var filter1Values = new Set();
+      var filter2Values = new Set();
+
+      data.features.forEach(function (feature) {
+        filter1Values.add(feature.properties.Risk_Weighted_Avg);
+        filter2Values.add(feature.properties.Investor_Profiles);
+      });
+
+      var filter1Select = document.getElementById('filter1');
+      filter1Values.forEach(function (value) {
+        var option = document.createElement('option');
+        option.value = value;
+        option.text = value;
+        filter1Select.add(option);
+      });
+
+      var filter2Select = document.getElementById('filter2');
+      filter2Values.forEach(function (value) {
+        var option = document.createElement('option');
+        option.value = value;
+        option.text = value;
+        filter2Select.add(option);
+      });
+
+      updateMap();
+    }
 
     // Function to apply filters and update the map
     function updateMap() {
@@ -49,7 +71,7 @@
       geojsonLayer = new L.GeoJSON.AJAX(geojson_url, {
         style: function (feature) {
           // Replace the following conditions with your own data filtering logic
-          if (feature.properties.Risk_Weighted_Avg === filter1 && feature.properties.Investor_Profiles === filter2) {
+          if (feature.properties.Risk_Weighted_Avg === parseFloat(filter1) && feature.properties.Investor_Profiles === filter2) {
             return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
           } else {
             return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
@@ -58,7 +80,8 @@
       }).addTo(map);
     }
 
-    // Add event listeners to the filter dropdowns
+    // Add event listeners to the filter dropdown
+
     document.getElementById('filter1').addEventListener('change', updateMap);
     document.getElementById('filter2').addEventListener('change', updateMap);
 
