@@ -12,12 +12,14 @@
   <div>
     <label for="filter1">Risk Weighted Avg:</label>
     <select id="filter1">
+      <option value="all">All</option>
     </select>
     <label for="filter2">Investor Profiles:</label>
     <select id="filter2">
+      <option value="all">All</option>
     </select>
   </div>
-  <div id="map" style="width: 100%; height: 800px;"></div>
+  <div id="map" style="width: 100%; height: 400px;"></div>
 
   <script>
     // Initialize the map
@@ -69,28 +71,41 @@
       }
 
       geojsonLayer = new L.GeoJSON.AJAX(geojson_url, {
-  style: function (feature) {
-    // Only apply filters if both dropdowns have valid values selected
-    if (filter1 !== "all" && filter2 !== "all") {
-      if (feature.properties.Risk_Weighted_Avg === parseFloat(filter1) && feature.properties.Investor_Profiles === filter2) {
-        return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
-      } else {
-        return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
-      }
-    } else {
-      return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
+        style: function (feature) {
+          // Only apply filters if both dropdowns have valid values selected
+          if (filter1 !== "all" && filter2 !== "all") {
+            if (feature.properties.Risk_Weighted_Avg === parseFloat(filter1) && feature.properties.Investor_Profiles === filter2) {
+              return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
+            } else {
+              return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
+            }
+          } else {
+            return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
+          }
+        }
+      }).addTo(map);
     }
-  }
-}).addTo(map);
-
 
     // Add event listeners to the filter dropdown
-
     document.getElementById('filter1').addEventListener('change', updateMap);
     document.getElementById('filter2').addEventListener('change', updateMap);
 
-    // Initialize the map with the default filter values
-    updateMap();
+    // Load GeoJSON data and populate filters
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          var data = JSON.parse(xhr.responseText);
+          populateFilters(data);
+        } else {
+          console.error('Failed to load GeoJSON data:', xhr.statusText);
+        }
+      }
+    };
+    xhr.open('GET', geojson_url, true);
+    xhr.send();
+
   </script>
 </body>
 </html>
+
