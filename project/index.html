@@ -76,7 +76,7 @@
         geojsonLayer.remove();
       }
 
-      geojsonLayer = new L.GeoJSON.ajax(geojson_url, {
+      geojsonLayer = new L.geoJSON.ajax(geojson_url, {
         style: function (feature) {
           if (feature.properties.Risk_Weighted_Avg === filter1 && (filter2 === 'all' || feature.properties.Investor_Profiles === filter2)) {
             return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
