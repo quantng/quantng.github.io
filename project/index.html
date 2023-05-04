@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Map with Filters</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+</head>
+<body>
+  <div>
+    <label for="filter1">Risk Weighted Avg:</label>
+    <select id="filter1">
+      <option value="value1">Value 1</option>
+      <option value="value2">Value 2</option>
+      <option value="value3">Value 3</option>
+    </select>
+    <label for="filter2">Investor Profiles:</label>
+    <select id="filter2">
+      <option value="valueA">Value A</option>
+      <option value="valueB">Value B</option>
+      <option value="valueC">Value C</option>
+    </select>
+  </div>
+  <div id="map" style="width: 100%; height: 400px;"></div>
+
+  <script>
+    // Initialize the map
+    var map = L.map('map').setView([39.8283, -98.5795], 4); // Set the view to the center of the US
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Load the GeoJSON data (replace this URL with your own dataset)
+    var geojson_url = 'https://github.com/quantng/quantng.github.io/blob/main/project/output.geojson';
+
+    var geojsonLayer;
+
+    // Function to apply filters and update the map
+    function updateMap() {
+      var filter1 = document.getElementById('filter1').value;
+      var filter2 = document.getElementById('filter2').value;
+
+      if (geojsonLayer) {
+        geojsonLayer.remove();
+      }
+
+      geojsonLayer = new L.GeoJSON.AJAX(geojson_url, {
+        style: function (feature) {
+          // Replace the following conditions with your own data filtering logic
+          if (feature.properties.Risk_Weighted_Avg === filter1 && feature.properties.Investor_Profiles === filter2) {
+            return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
+          } else {
+            return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
+          }
+        }
+      }).addTo(map);
+    }
+
+    // Add event listeners to the filter dropdowns
+    document.getElementById('filter1').addEventListener('change', updateMap);
+    document.getElementById('filter2').addEventListener('change', updateMap);
+
+    // Initialize the map with the default filter values
+    updateMap();
+  </script>
+</body>
+</html>
