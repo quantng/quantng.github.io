@@ -11,19 +11,18 @@
 <body>
   <div>
     <label for="filter1">Risk Weighted Avg:</label>
-    <select id="filter1">
-      <option value="all">All</option>
-    </select>
+    <input type="range" id="filter1" value="0" step="0.1">
+    <span id="filter1-value"></span>
     <label for="filter2">Investor Profiles:</label>
     <select id="filter2">
       <option value="all">All</option>
     </select>
   </div>
-  <div id="map" style="width: 100%; height: 400px;"></div>
+  <div id="map" style="width: 100%; height: 700px;"></div>
 
   <script>
     // Initialize the map
-    var map = L.map('map').setView([39.8283, -98.5795], 4); // Set the view to the center of the US
+    var map = L.map('map').setView([41.881832, -87.623177], 7); // Set the view to the center of the US
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -34,21 +33,22 @@
     var geojsonLayer;
 
     function populateFilters(data) {
-      var filter1Values = new Set();
       var filter2Values = new Set();
+      var minRiskWeightedAvg = Infinity;
+      var maxRiskWeightedAvg = -Infinity;
 
       data.features.forEach(function (feature) {
-        filter1Values.add(feature.properties.Risk_Weighted_Avg);
+        var riskWeightedAvg = feature.properties.Risk_Weighted_Avg;
         filter2Values.add(feature.properties.Investor_Profiles);
+
+        minRiskWeightedAvg = Math.min(minRiskWeightedAvg, riskWeightedAvg);
+        maxRiskWeightedAvg = Math.max(maxRiskWeightedAvg, riskWeightedAvg);
       });
 
-      var filter1Select = document.getElementById('filter1');
-      filter1Values.forEach(function (value) {
-        var option = document.createElement('option');
-        option.value = value;
-        option.text = value;
-        filter1Select.add(option);
-      });
+      var filter1Slider = document.getElementById('filter1');
+      filter1Slider.min = minRiskWeightedAvg.toFixed(1);
+      filter1Slider.max = maxRiskWeightedAvg.toFixed(1);
+      filter1Slider.step = 0.1;
 
       var filter2Select = document.getElementById('filter2');
       filter2Values.forEach(function (value) {
@@ -58,37 +58,35 @@
         filter2Select.add(option);
       });
 
+      document.getElementById('filter1').addEventListener('input', function () {
+        document.getElementById('filter1-value').textContent = this.value;
+        updateMap();
+      });
+      document.getElementById('filter1-value').textContent = document.getElementById('filter1').value;
+
       updateMap();
     }
 
     // Function to apply filters and update the map
     function updateMap() {
-      var filter1 = document.getElementById('filter1').value;
+      var filter1 = parseFloat(document.getElementById('filter1').value);
       var filter2 = document.getElementById('filter2').value;
 
       if (geojsonLayer) {
         geojsonLayer.remove();
       }
 
+      geojsonLayer = new L.GeoJSON.AJ
       geojsonLayer = new L.GeoJSON.AJAX(geojson_url, {
         style: function (feature) {
-          // Only apply filters if both dropdowns have valid values selected
-          if (filter1 !== "all" && filter2 !== "all") {
-            if (feature.properties.Risk_Weighted_Avg === parseFloat(filter1) && feature.properties.Investor_Profiles === filter2) {
-              return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
-            } else {
-              return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
-            }
+          if (feature.properties.Risk_Weighted_Avg === filter1 && (filter2 === 'all' || feature.properties.Investor_Profiles === filter2)) {
+            return { fillColor: 'red', color: 'black', weight: 1, fillOpacity: 0.7 };
           } else {
             return { fillColor: 'blue', color: 'black', weight: 1, fillOpacity: 0.7 };
           }
         }
       }).addTo(map);
     }
-
-    // Add event listeners to the filter dropdown
-    document.getElementById('filter1').addEventListener('change', updateMap);
-    document.getElementById('filter2').addEventListener('change', updateMap);
 
     // Load GeoJSON data and populate filters
     var xhr = new XMLHttpRequest();
@@ -104,8 +102,6 @@
     };
     xhr.open('GET', geojson_url, true);
     xhr.send();
-
   </script>
 </body>
 </html>
-
